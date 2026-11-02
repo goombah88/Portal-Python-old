@@ -1,0 +1,2 @@
+- Run passwd_root.sh script with old password
+- Reset VCS and RHDS passwords to previous password.

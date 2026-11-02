@@ -1,0 +1,4 @@
+On each server:
+- update /etc/security/limits.conf with new entries
+	actional soft nofile 2048
+	actional hard nofile 2048

@@ -1,0 +1,4 @@
+Update Kernel Parameters as listed on the following servers: 
+- edit /etc/sysctl.conf and add parameter
+- sysctl -p
+

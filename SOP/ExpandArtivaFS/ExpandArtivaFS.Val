@@ -1,0 +1,3 @@
+- Check that size of new FS is correct with df
+- Check that punifiart020 can mount it correctly and it shows there also the new size
+

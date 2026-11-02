@@ -1,0 +1,4 @@
+Enable DR replication by having the DR server pull the data to itself.
+
+Servers:
+

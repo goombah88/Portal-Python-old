@@ -1,0 +1,2 @@
+1. append "notsc divider=10" to grub configuration.
+2. reboot

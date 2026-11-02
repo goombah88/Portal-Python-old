@@ -1,0 +1,99 @@
+PREP WORK TO DO BEFORE THE SCHEDULED P2V on the target VM
+- Boot new server from the RHEL ISO/DVD that is the same flavor as your source server
+- At the install prompt type "linux rescue" and press enter
+	
+- Go through rescue gui accepting defaults
+-When prompted to start the network interfaces, select 'Yes'
+	*Go through the network screens and enter the appropriate IP, netmask, gateway and DNS
+-At the 'Rescue' screen, select 'Continue'
+
+	
+	
+-Alternate steps to bring up the network in case you're not prompted from the rescue gui:
+	* ifconfig eth0 <temp IP-address> netmask <netmask> up
+	* route add default gw <default-gateway>
+- Create the file systems
+	* fdisk /dev/sda
+		~ Create a boot 128MB boot partition and allocate the rest to LVM (make sure to set the partition type to '8e')
+	* Create volme group(s) [if the LVM commands fail as is, put 'lvm ' in front of them. ie: lvm pvcreate /dev/sda2]. The commands below are just examples. Adjust the VG, LV and file system names as appropriate for the system you are P2V'ing. Also make note of volume groups from your source system above and beyond vgroot.
+		~ pvcreate /dev/sda2
+		~ vgcreate vgroot /dev/sda2
+		~ For each LV:   lvm lvcreate -L <size> -n FS_<name> vgroot
+		~ Make file systems & swap:
+			- mke2fs -j /dev/sda1 (boot partition)
+			- For each LV: mke2fs -j /dev/vgroot/<name>
+				(cd /dev/vgroot; for FS in `ls FS_*`; do mke2fs -j $FS; done)
+			- mkswap /dev/vgroot/LV_swap
+		~ Enable the VG (in case it hasn't activated automatically): vgchange -a y vgroot
+- Mount the new file systems
+	* mkdir /a
+	* mount /dev/vgroot/FS_root /a
+	* mkdir /a/boot
+	* mount /dev/sda1 /a/boot
+	* for FS in usr var home tmp opt; do mkdir /a/$FS; mount /dev/vgroot/FS_$FS /a/$FS; done
+	* mkdir /a/usr/openv; mount /dev/vgroot/FS_openv /a/usr/openv
+	* Continue the process for all remaining file systems residing on your source server
+		~mkdir /a/<mount point>; mount /dev/<vg>/<lv> <mount point>
+
+Steps to perform during the scheduled P2V
+-Unmanage the source server in Hobbit and HPOV
+- Start netcat on the target server
+	* cd /a; nc -l -p 9001 | tar xpvf -
+
+-Perform on the source server:
+	*Boot into single user mode to ensure there's no activity on the box
+		~init 1
+	*Bring up the network
+		~service network start
+	*Start the flying tarball over netcat
+	
+		~cd /; tar cpf - `/bin/ls -d * .[a-zA-Z]* | egrep -v "proc|lost\+found|sys"`  | nc <IP of dest-server> 9001
+
+
+=Back on the target server:
+
+- Label the boot device (and any other that is using labels based off of fstab)
+	* e2label /dev/sda1 /boot
+- Create proc mount points
+	* mkdir /a/{proc,sys}
+- chroot into /a
+	* chroot /a
+- Re-make disk device files
+	* cd /dev; ./MAKEDEV sd
+- Setup grub
+	* Update boot devices
+		~ Update /boot/grub/device.map with the boot disk device
+			-ie:   (hd0)     /dev/sda
+		~ Update /boot/grub/grub.conf with the same boot disk device used above
+			-ie:    #boot=/dev/sda
+			-If the source system is currently using a hugemem kernel, update grub.conf at this point to boot off of the regular SMP kernel by changing the default line accordingly
+	* Update RAM disk image
+		~ cd /boot; mkinitrd -v -f --with=mptscsih --with=ext3 initrd-<kernel version>.img <kernel version>
+			-This needs to be the same kernel version that grub.conf is set to boot into. Don't assume that the kernel from the rescue CD is the same so using `uname -r` to get the kernel version shouldn't be used
+	* Load grub into the MBR
+		~ /sbin/grub-install /dev/sda
+			OR if that fails
+		~ Execute: /sbin/grub, then execute: root (hd0,0)      then execute:  setup (hd0)
+- Uninstall HPSIM
+	* rpm -e $(rpm -qa | egrep 'hpasm|hpadu|hpsmh|hpacucli|HPSIM|cmanic|hprsm|hponcfg')
+		~ You may have to run that more then once to eliminate all packages in the correct order.  Also, the list of packages is not complete if you are dealing with the updated HP agents.
+-Comment out HWADDR in any /etc/sysconfig/network-scripts/ifcfg-ethX files
+- Exit chroot
+- Unmount all of the file systems mounted under /a
+	*Failure to do this will result in an fsck of all of your devices after the first reboot.
+
+-Perform on the source server to make sure it doesn't come on the network by accident:
+	* Set ONBOOT=no in /etc/sysconfig/network-scripts/ifcfg-eth0
+	* Set id to 1 in /etc/inittab to force single user mode in case the server gets powered up. Just extra assurance that it doesn't come on the network on accident.
+	* Power down the original physical host
+
+	
+- Reboot VM into single user mode and disconnect your rescue boot media
+- Install VMware tools
+- Reboot VM
+-Remove HPSIM software policy from the server from within Opsware
+-Force Opsware hardware info update
+	*/opt/opsware/agent/pylibs/cog/bs_hardware
+
+- In the UNIX server DB, change hardware Model to VMware and clear out the following fields: Serial, Asset Tag, Location and Server Console
+

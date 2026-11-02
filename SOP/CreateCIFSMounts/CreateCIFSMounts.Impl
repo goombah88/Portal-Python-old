@@ -1,0 +1,4 @@
+1. Install samba-client (RPM or Yum) (samba3x-client on RHEL5)
+2. mkdir {mounts}
+3. echo '//REMOTE  /path/to/mount cifs   username=server_user,password=secret   0 0' >> /etc/fstab
+4. mount -a

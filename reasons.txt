@@ -1,0 +1,9 @@
+Temp spike in CPU usage.
+Temp spike in swap usage.
+Temp spike in memory usage.
+Password reset and emailed to user.
+Server is being retired.
+Monitoring slow to respond due to heavy load on the server.
+Problem cleared itself up.
+Manual DR replication ran fine.
+Upromise has been notified of the issue via email.

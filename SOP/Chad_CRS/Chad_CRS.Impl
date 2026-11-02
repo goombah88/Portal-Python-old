@@ -1,0 +1,4 @@
+Expand /tmp and /usr/openv to get ready for Netbackup upgrade.
+
+Run ExpandFilesystems.sh script against each server to increase the filesystems where necessary.
+Previously tested on Dev servers.

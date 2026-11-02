@@ -1,0 +1,11 @@
+Switch the below servers from pushing DR replication to its DR server to having the DR
+server pull the data to itself.
+
+1. Create the replacct on the production server.
+2. Share the SSH key
+3. Copy /etc/sudoers entry from DR to prod server
+4. Comment out "Defaults    requiretty" if it exists in /etc/sudoers
+5. Copy /etc/replicated_filesystems from prod to DR server
+6. Move the cron job from the prod to DR server
+7. Copy "pull" version of dr_replication script from GlobalShell to DR server
+8. Do a test replication and resolve any issues.

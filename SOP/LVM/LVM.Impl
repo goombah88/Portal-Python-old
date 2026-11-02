@@ -1,0 +1,12 @@
+1. Scan for new disks
+2. fdisk /dev/emcpower?? {n,p,1,x,b,128,w}
+3. pvcreate /dev/emcpower??1
+4. vgextend <VG> /dev/emcpower??1
+5. lvconvert -m 1 --mirrorlog core /dev/<vg>/<LV>  /dev/emcpower??1
+6. lvconvert -m 0 /dev/<vg>/<LV>  <old disk>1
+7. lvextend -L +<size>G /dev/<VG>/<LV>
+8. resize2fs /dev/<VG>/<LV>
+9. vgreduce <VG> <old disk>1
+10. powermt remove dev=<old disk>
+11. Put new clone group name into pcra01bk3 CloneList.txt file
+

@@ -1,0 +1,4 @@
+1. mkdir java; cd java
+2. wget http://nunifiunx040/jdk-6u17-linux-x64-rpm.bin
+3. chmod +x jdk*
+4. ./jdk-6u17-linux-x64-rpm.bin

@@ -1,0 +1,7 @@
+- Get patch cluster to server by
+- - Mount server which has patch cluster to /mnt 
+- - or copy 10_*Recommended.zip to filesystem with enough space and unpack
+- Run installcluster --s10patchset
+- check log-files for errors
+- reboot server
+- resolve all issues during patching

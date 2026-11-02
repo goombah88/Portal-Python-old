@@ -1,0 +1,4 @@
+- cat /etc/security/limits.conf
+- su - actional
+- ulimit -Hn
+- ulimit -Sn

@@ -1,0 +1,3 @@
+1. ssh to Blade/Proliant Server's ILO
+2. UPDATE IMAGE http://172.18.72.40/Firmware/hpoa321.bin  (If Onboard Administrator)
+3. UPDATE ILO ALL http://172.18.72.40/Firmware/ilo2_201.bin

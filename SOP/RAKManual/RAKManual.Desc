@@ -1,0 +1,1 @@
+GRCFACS blocks udp/4001, which is the FACS licensing server. We have to enable this in the local hostbased firewall rules.

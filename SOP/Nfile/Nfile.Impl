@@ -1,0 +1,4 @@
+1. cmhaltpkg fnswfibes6-p 
+2. sam [reconfigure/complie kernel then reboot]
+3. cmrunpkg fnswfibes6-p (if not started on boot)
+

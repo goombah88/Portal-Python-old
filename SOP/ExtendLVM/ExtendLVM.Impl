@@ -1,0 +1,2 @@
+1. lvextend -L +<size>G /dev/<VG>/<LV>
+2. resize2fs /dev/<VG>/<LV>

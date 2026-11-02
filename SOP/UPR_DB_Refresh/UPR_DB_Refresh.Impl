@@ -1,0 +1,4 @@
+Assist in reverting a snpshot on Upromise Dev DB server aqua-hippo
+
+- unmount the volume when the app/db are down
+- mount the volume when the storage team is done restoring

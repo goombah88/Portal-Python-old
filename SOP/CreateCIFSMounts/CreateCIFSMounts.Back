@@ -1,0 +1,4 @@
+1. umount mounts
+2. remove entries from /etc/fstab
+3. rm {mounts}
+4. rpm -e samba-client

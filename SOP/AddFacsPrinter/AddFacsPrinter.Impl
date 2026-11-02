@@ -1,0 +1,8 @@
+1. Add printer with IP into /etc/hosts
+
+2.Add printer with
+#PRINTER=(printer from information below); 
+#lpadmin -p ${p} -m laserjet.ppd.gz -v socket://$p:9100 -E; 
+#lpadmin -p ${p}raw -i /etc/cups/FilterFixEOL.sh -v socket://${p}:9100 -E; 
+
+

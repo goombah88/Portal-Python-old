@@ -1,0 +1,11 @@
+IF FACS/STUNNEL: 
+
+1. cat /etc/stunnel/cert/ssl.key/<Server Name>.key.unsecure /etc/stunnel/cert/ssl.key/<Server Name>-SLMA-20xx.crt >> /etc/stunnel/cert/ssl.pem/<Server Name>-SLMA-20xx.pem 
+2. cd /etc/stunnel/cert/ssl.pem && ln -s -f ssl.pem/<Server Name>-SLMA-20xx.pem <Server Name>.pem
+3. restart vsftpd and stunnel
+
+IF VSFTP:
+1. cat /etc/vsftpd/*/ssl.key/<Server Name>.key.unsecure /etc/vsftpd/*/ssl.key/<Server Name>-SLMA-20xx.crt >> /etc/vsftpd/*/ssl.pem/<Server Name>-SLMA-20xx.pem 
+2. cd /etc/vsftpd/*/ssl.pem && ln -s -f ssl.pem/<Server Name>-SLMA-20xx.pem <Server Name>.pem
+3. restart vsftpd
+

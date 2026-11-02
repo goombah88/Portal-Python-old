@@ -1,0 +1,9 @@
+vi /etc/init.d/documentum
+At the end of the STARTUP Scripts add the following line
+/bin/su - zdcd01 -c /dctm_app/dba/jon/src/rhq-agent/bin/rhq-agent-wrapper.sh start
+
+At the Shutdown Section 
+Add line before JMS shutdown line
+/bin/su - zdcd01 -c /dctm_app/dba/jon/src/rhq-agent/bin/rhq-agent-wrapper.sh stop
+
+

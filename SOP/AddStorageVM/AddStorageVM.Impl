@@ -1,0 +1,5 @@
+1. fdisk /dev/sdd
+2. pvcreate /dev/sdd1
+3. vgextend /dev/vgroot /dev/sdd1
+4. lvextend -L +15G /dev/vgroot/FS_appl
+5. resize2fs  /dev/vgroot/FS_appl

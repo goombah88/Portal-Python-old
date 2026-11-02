@@ -1,0 +1,4 @@
+Add kernel parameters to servers below
+
+IMPACT: Server will be unavailable during reboot
+

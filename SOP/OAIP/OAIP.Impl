@@ -1,0 +1,3 @@
+1. ssh to OA, politician.prod.upromise.com
+2. SET EBIPA INTERCONNECT <IP> NETMASK <NM> GATEWAY <GW> 
+2. SET IPCONFIG static <OA-BAY>  <IP> <NM> <GW> <DN1>

@@ -1,0 +1,3 @@
+Printer IP is 10.151.8.58
+
+1. lpadmin -p <PPRINTER NAME> -m laserjet.ppd.gz -v socket://<PRINTER ADDRESS>:9100 -E;

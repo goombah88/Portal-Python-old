@@ -1,0 +1,4 @@
+- On Red Hat check /var/log/PostPatch.log and /var/log/*-Patching-*log for errors
+- Check syslog for any issues
+- Check Nagios for any issues
+- Ensure all file systems are mounted

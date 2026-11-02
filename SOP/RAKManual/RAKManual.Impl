@@ -1,0 +1,2 @@
+- Edit /etc/sysconfig/iptables and enable udp/4001
+- reload iptables

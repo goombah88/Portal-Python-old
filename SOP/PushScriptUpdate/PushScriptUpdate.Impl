@@ -1,0 +1,8 @@
+Implementation Plan:
+1. Copy script to each server via opsware.
+2. groupadd ontadmin
+3. Add Sam Bowyer and Dan Gibson to the new group
+    usermod -a -G ontadmin sbowyer
+    usermod -a -G ontadmin e59575
+4. Add sudoers entry for the group to run the script
+    echo -e "\n\n# Ontario User Administration\nontadmin ALL=(ALL) NOPASSWD:/usr/local/scripts/Ontario_User_Administration.sh

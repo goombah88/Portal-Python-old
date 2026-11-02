@@ -1,0 +1,35 @@
+#!/usr/bin/expect -f
+
+set force_conservative 0  ;# set to 1 to force conservative mode even if
+			  ;# script wasn't run conservatively originally
+if {$force_conservative} {
+	set send_slow {1 .1}
+	proc send {ignore arg} {
+		sleep .1
+		exp_send -s -- $arg
+	}
+}
+
+set PASS [lindex $argv 0]
+set COMMAND [lindex $argv 1]
+
+set timeout -1
+spawn $env(SHELL)
+match_max 100000
+expect "> "
+send -- "ssh -p 2222 $env(USER)@punifiops030"
+expect -exact "-p 2222 $env(USER)@punifiops030"
+send -- "\r"
+expect -exact "\r
+\r
+  Opsware Global Shell\r
+\r
+$env(USER)@opsware's password:"
+send -- "$PASS\r"
+expect "~>"
+send -- "$COMMAND\r"
+#interact
+expect "~>"
+send -- "exit\r"
+send -- "exit\r"
+send -- "exit\r"

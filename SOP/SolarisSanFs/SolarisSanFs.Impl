@@ -1,0 +1,15 @@
+metastat /dev/md/rdsk/d3001
+cfgadm -al
+devfsadm -c disk -v
+powermt display dev=all
+powermt config
+powermt save
+format
+- select new device (/dev/dsk/emcpower#)
+- p
+- p, delete default layout, with the exception of partition 2.
+create new partition 0, using start cylinder 0 and end cylinder from partition 2+1 #c
+- label
+metattach d3001 /dev/dsk/emcpower#a
+metastat /dev/md/rdsk/d3001
+growfs -M /oradata/pasindex /dev/md/rdsk/d3001

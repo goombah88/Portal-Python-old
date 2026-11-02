@@ -1,0 +1,27 @@
+pply patches according the following procedures:
+Red Hat:
+- For RAW servers change nunifixen010 in rhel-SLMA.repo to 167.104.10.118
+- Add all servers into file with
+- - servername O/S Hardware App
+- - Use VMware as Hardware for VMs
+- Run
+- - Stage VMWare tools tar file on VMs
+- - - StageVMwareTools.sh <filename>
+- - Reset Web GUI for status
+- - - ResetPatchWebGUI.sh <filename>
+- - Disable patching
+- - - DisablePaging.sh <filename>
+- At time of patching run
+- - StartPatchingAutoSrv.sh <filename>
+- and in different window run
+- - CheckServers.sh <filename>
+- When everything is finished, run
+- - CheckSrvAfterPatching.sh <filename>
+HP/UX (there are no new patches for this O/S):
+- Use Ignite to apply patches
+- Parse through log-file and look for errors
+Solaris:
+- Copy recommended cluster to server (find large enough directory)
+- Look for password in file for Solaris 10 servers
+- Run script to apply recommended patches
+- Parse through log-file and check for errors

@@ -1,0 +1,4 @@
+1. Copy specific file systems over to new base server. 
+2. Edit network setttings to prevent network startup. 
+3. Power off old server.
+4. Change ip/hostname to match on new server, reboot.

@@ -1,0 +1,9 @@
+edit smb.conf with appropriate values
+service smb start
+service winbind start
+chkconfig smb on
+chkconfig winbind on
+
+get windows admin for "net ads join -U osmadmin"
+
+add users

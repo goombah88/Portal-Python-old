@@ -1,0 +1,3 @@
+Update fstab on Prod CRS server puniarcrs050 to reflect new dump server name
+
+- Edit /etc/fstab and change all instances of pcra01crsdump to puniardmp010

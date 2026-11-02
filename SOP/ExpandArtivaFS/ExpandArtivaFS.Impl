@@ -1,0 +1,60 @@
+/salprod
+-----------
+OLD LUN: LUN_23
+NEW LUN: 
+
+On punifiart010:
+- Freeze Artiva-Prod cluster group 
+hagrp -freeze Artiva-Prod
+- rescan bus to find new storage (/root/scripts/scan_*sh)
+- write label with fdisk
+fdisk <new device>
+w
+- initialize with Veritas vxdiskadm and add to metadg disk-group
+vxdisk scandisks
+vxdiskadm
+- 1: initialize disk 
+- default values except of "Name of disk", then choose later a name with LUN_173
+- mirror /salprod to new disks with vxassist (vxassit -g <disk-group> mirror <volume-name> alloc=<new name>)
+vxassist -g metadg mirror salprod alloc=LUN_X
+- mirror /journal to new disks with vxassist (vxassit -g <disk-group> mirror <volume-name> alloc=<new name>)
+
+- Wait for first SplitMirrorBackupArtiva.sh SyncDisk started for this server
+- remove old mirror with vxassist (vxassist -g <disk-group> remove mirror <volume name> \!<old name>)
+- - Make sure you run this command when the BCVs to the old LUN are not fractured (so they're synchronized or synchrozing). This is very important to avoid a split-brain situation on the backup server punififac330
+vxassist -g metadg remove mirror salprod \!LUN_23 
+
+- Grow logival volume (vxassist -g <disk-group> maxgrow <volume name> alloc=<diskname where volume lives on>)
+vxassist -g metadg maxgrow salprod alloc=LUN_X 
+these commands get you the maximum size of volume, note it
+- increase logical volume and filesystem with vxresize (/usr/lib/vxvm/bin/vxresize -g <disk-group> <volume name> <max new size> alloc=<diskname where volume lives on>)
+/usr/lib/vxvm/bin/vxresize -g metadg salprod <max new size> alloc=LUN_X
+
+- Remove old disk from Veritas
+vxdg -g metadg rmdisk LUN_23
+
+#vxdisk offline emcpowere
+#vxdisk rm emcpowere
+#powermt remove dev=emcpowere
+
+On punifiart030:
+- Scan for new storage (/root/scripts/scan_*)
+- Let VxVM scan for new storage (vxdisk scandisks)
+- Make sure it sees the new storage and it's in the correct diskgroup (vxdisk -o alldgs scandisks)
+- Unfreeze cluster service group
+hagrp -unfreeze Artiva-Prod
+
+On punifiart020:
+- rescan bus to find new storage (/root/scripts/scan_*.sh)
+- Edit /usr/local/scripts/CloneLst.txt and change device name, LUN, and ClonedLUN
+- Make sure new BCV is in same state than other LUNs. 
+- - If they're split, then split it also
+- - If they're synchronized or synchronizing, start this process also with 
+- - - /opt/VRTSjre/jre1.4/bin/java -jar /opt/Navisphere/bin/navicli.jar -User facsclone -Password <password> -Scope 0 -address clardsk24spa snapview -syncclone -name <New BCV clone group name> -cloneid 0100000000000000 -o
+
+
+Verify that new filesystem got imported and mounted correctly
+
+Open change request to SAN team (CSC SAN Storage.Remove) to remove the old LUN.
+
+

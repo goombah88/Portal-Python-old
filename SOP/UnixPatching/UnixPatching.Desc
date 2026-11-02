@@ -1,0 +1,2 @@
+This is part of our yearly patching cycle to keep our Unix serves within compliance. 
+We will apply the latest vendor supplied OS patches for security and bug fixes. The servers involved should be considered completely unavailable for the duration of the change. 

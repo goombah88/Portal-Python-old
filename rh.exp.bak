@@ -1,0 +1,46 @@
+#!/usr/bin/expect -f
+
+set force_conservative 0  ;# set to 1 to force conservative mode even if
+			  ;# script wasn't run conservatively originally
+if {$force_conservative} {
+	set send_slow {1 .1}
+	proc send {ignore arg} {
+		sleep .1
+		exp_send -s -- $arg
+	}
+}
+
+#set prompt "(% |# |>|> |\\$ ) $";
+#catch {set prompt $env(EXPECT_PROMPT)}
+
+set timeout -1
+spawn $env(SHELL)
+match_max 100000
+expect "> "
+send -- "ssh -p 2222 e65791@punifiops030"
+expect -exact "-p 2222 e65791@punifiops030"
+send -- "\r"
+expect -exact "\r
+\r
+  Opsware Global Shell\r
+\r
+e65791@opsware's password:"
+send -- "<PASSWORD>\r"
+expect "~>"
+send -- "[lindex $argv 0]\r"
+expect {
+	"# " { send -- "bash\r" }
+	">" { send -- "bash\r" }
+	"> " { send -- "bash\r" }
+	"% " { send -- "bash\r" }
+	"$ " { send -- "bash\r" }
+	}
+expect {
+	"# " { send -- ". /home/e65791/.bashrc\r" }
+	">" { send -- ". /home/e65791/.bashrc\r" }
+	"> " { send -- ". /home/e65791/.bashrc\r" }
+	"% " { send -- ". /home/e65791/.bashrc\r" }
+	"$ " { send -- ". /home/e65791/.bashrc\r" }
+	}
+#expect -re $prompt
+interact

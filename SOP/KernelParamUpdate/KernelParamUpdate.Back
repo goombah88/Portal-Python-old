@@ -1,0 +1,2 @@
+1. Remove entry from /etc/sysctl.conf
+2. sysctl -p 

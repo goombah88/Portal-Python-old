@@ -1,0 +1,3 @@
+Server Kernel will need to be reconfigured to allow moreopen files as the current nfile limit is causeing system problems
+
+IMPACT: Server will be unavailable during this time.

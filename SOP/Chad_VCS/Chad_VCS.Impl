@@ -1,0 +1,11 @@
+Remove filesystems /pgaa, /pgac and /pgac and create new file system from recovered space mounted as /pgagbb
+
+umount /pgaa /pgab /pgac
+vxassist -g fac300_metadg remove volume pgaa
+vxassist -g fac300_metadg remove volume pgab
+vxassist -g fac300_metadg remove volume pgac
+vxassist -g fac300_metadg make pgagbb 150G
+mkfs -t vxfs /dev/vx/dsk/fac300_metadg/pgagbb
+
+edit fstab
+mount /pgagbb

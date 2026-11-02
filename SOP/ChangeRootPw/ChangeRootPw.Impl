@@ -1,0 +1,14 @@
+- startup cirrus vm build templates in vcenter
+Templates->Templates_Automation->Templates_Automation_Linux
+automation_rhel5.5-x64.master
+automation_rhel5.5-x86.master
+automation_rhel6.1-x64.master
+automation_rhel6.1-x86.master
+- on punifiops020, run /home/common/Accsec/passwd_root.sh , enter new passwod when prompted
+- manually change to the new root password on these servers (not in opsware)
+o comet.corp
+o cometbackup (10.203.121.208)
+o ono-sendai.corp
+o blue-sun.prod
+- Add new entry in password datastore for new password
+- Notify team that new password has been set and datastore has been updated

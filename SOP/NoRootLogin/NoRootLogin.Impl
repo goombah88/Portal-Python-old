@@ -1,0 +1,1 @@
+1. sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config && /etc/inint.d/sshd restart 

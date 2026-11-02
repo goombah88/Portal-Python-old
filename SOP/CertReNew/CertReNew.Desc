@@ -1,0 +1,3 @@
+Renew Certificate on the listed servers
+
+IMPACT: vsftpd and/or stunnel services will need to be restarted. 

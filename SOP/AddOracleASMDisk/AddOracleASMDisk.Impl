@@ -1,0 +1,26 @@
+New procedure:
+use /home/common/SAN/CreateASM.sh
+
+=====================================
+
+1. Scan hba's for new storage. 
+2. multipath
+3. fdisk /dev/mapper/mpath[?] { n, p, 1, <enter>, <enter>, x, b, 128} 
+4. On RHEL6: partprobe /dev/mapper/mpath[?]
+   On RHEL5: kpartx -av /dev/mapper/mpath[?]
+   Make sure /dev/mpath/mpath[?]p1 and /dec/mapper/mpath[?]p1 exist
+5 /etc/init.d/oracleasm createdisk DATA## /dev/mapper/mpath?p1
+On second server:
+6. Scan hba's for new storage
+7. multipath
+9. /etc/init.d/oracleasm scandisks
+
+***
+If the createdisk command hangs for more than 30 seconds, 
+run the following command (per Redhat) to check on status:
+dmsetup info -c 
+If you see a "S" then it's Suspended.
+Run the following to Resume the LUN:
+dmsetup resume mpathXXp1 (replace XX with your actual LUN #)
+Queued commands should finish successfully now.
+***
